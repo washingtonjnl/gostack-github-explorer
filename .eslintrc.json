@@ -25,6 +25,7 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "object-curly-newline": "off",
     "@typescript-eslint/no-empty-interface": "off",
     "arrow-parens": "off",
     "arrow-body-style": "off",
