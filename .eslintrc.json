@@ -25,6 +25,8 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "operator-linebreak": "off",
+    "no-unused-vars": "off",
     "object-curly-newline": "off",
     "@typescript-eslint/no-empty-interface": "off",
     "arrow-parens": "off",

@@ -2,7 +2,14 @@ import styled from 'styled-components';
 import { shade } from 'polished';
 
 export const Container = styled.div`
+  width: 100%;
   max-width: 960px;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
   margin: 0 auto;
   padding: 40px 20px;
 `;
@@ -18,7 +25,7 @@ export const Title = styled.h1`
 
 export const Form = styled.form`
   margin-top: 40px;
-  max-width: 100%;
+  width: 100%;
 
   display: flex;
   height: 70px;
@@ -61,7 +68,7 @@ export const Form = styled.form`
 
 export const Repositories = styled.div`
   margin-top: 60px;
-  max-width: 100%;
+  width: 100%;
 
   a {
     width: 100%;
@@ -112,5 +119,19 @@ export const Repositories = styled.div`
         margin-top: 4px;
       }
     }
+  }
+`;
+
+export const NothingMessage = styled.div`
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    font-size: 18px;
+    text-align: center;
+    color: ${props => props.theme.colors.altText};
   }
 `;
