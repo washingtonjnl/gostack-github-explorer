@@ -25,6 +25,7 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "no-unused-expressions": "off",
     "no-extra-boolean-cast": "off",
     "operator-linebreak": "off",
     "no-unused-vars": "off",

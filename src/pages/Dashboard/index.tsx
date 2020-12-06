@@ -23,7 +23,7 @@ interface ISearchResponse {
 }
 
 const Dashboard: React.FC = () => {
-  const [newRepo, setNewRepo] = useState('');
+  const [searchRepo, setSearchRepo] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [eventMessage, setEventMessage] = useState(
     'Buscando repositórios recentes no GitHub...',
@@ -31,10 +31,11 @@ const Dashboard: React.FC = () => {
   const [repositories, setRepositories] = useState([] as IRepo[]);
 
   useEffect(() => {
+    setSearchRepo('');
     setIsSearching(true);
 
     api.get('repositories').then(res => {
-      const repos = res.data;
+      const repos: IRepo[] = res.data;
       setRepositories(repos);
 
       setIsSearching(false);
@@ -48,26 +49,29 @@ const Dashboard: React.FC = () => {
     e.preventDefault();
     setIsSearching(true);
 
-    if (!newRepo) {
+    if (!searchRepo) {
       const response = await api.get('repositories');
-      const repos = response.data;
+      const repos: IRepo[] = response.data;
 
       setRepositories(repos);
-      setEventMessage('');
+
+      repos.length === 0
+        ? setEventMessage('Nenhum repositório encontrado.')
+        : setEventMessage('');
     } else {
       const searchResponse: ISearchResponse = await api.get(
-        `/search/repositories?q=${newRepo}`,
+        `/search/repositories?q=${searchRepo}`,
       );
       const repos = searchResponse.data.items;
 
       setRepositories(repos);
-      setEventMessage('');
+
+      repos.length === 0
+        ? setEventMessage('Nenhum repositório encontrado.')
+        : setEventMessage('');
     }
 
     setIsSearching(false);
-    if (repositories === []) {
-      setEventMessage('Nenhum repositório encontrado.');
-    }
   }
 
   return (
@@ -78,8 +82,8 @@ const Dashboard: React.FC = () => {
       <Form onSubmit={handleSearchRepository}>
         <input
           placeholder="Digite o nome do repositório"
-          value={newRepo}
-          onChange={e => setNewRepo(e.target.value)}
+          value={searchRepo}
+          onChange={e => setSearchRepo(e.target.value)}
         />
         <button type="submit">
           {isSearching ? 'Aguarde...' : 'Pesquisar'}
