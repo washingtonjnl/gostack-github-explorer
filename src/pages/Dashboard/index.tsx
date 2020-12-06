@@ -4,7 +4,7 @@ import api from '../../services/api';
 
 import logoImg from '../../assets/logo.svg';
 
-import { Container, Title, Form, Repositories, NothingMessage } from './styles';
+import { Container, Title, Form, Repositories, EventMessage } from './styles';
 
 interface IRepo {
   id: number;
@@ -25,12 +25,20 @@ interface ISearchResponse {
 const Dashboard: React.FC = () => {
   const [newRepo, setNewRepo] = useState('');
   const [isSearching, setIsSearching] = useState(false);
+  const [eventMessage, setEventMessage] = useState(
+    'Buscando repositórios recentes no GitHub...',
+  );
   const [repositories, setRepositories] = useState([] as IRepo[]);
 
   useEffect(() => {
+    setIsSearching(true);
+
     api.get('repositories').then(res => {
       const repos = res.data;
       setRepositories(repos);
+
+      setIsSearching(false);
+      setEventMessage('');
     });
   }, []);
 
@@ -41,20 +49,25 @@ const Dashboard: React.FC = () => {
     setIsSearching(true);
 
     if (!newRepo) {
-      api.get('repositories').then(res => {
-        const repos = res.data;
-        setRepositories(repos);
-      });
+      const response = await api.get('repositories');
+      const repos = response.data;
+
+      setRepositories(repos);
+      setEventMessage('');
     } else {
       const searchResponse: ISearchResponse = await api.get(
         `/search/repositories?q=${newRepo}`,
       );
-
       const repos = searchResponse.data.items;
+
       setRepositories(repos);
+      setEventMessage('');
     }
 
     setIsSearching(false);
+    if (repositories === []) {
+      setEventMessage('Nenhum repositório encontrado.');
+    }
   }
 
   return (
@@ -73,10 +86,10 @@ const Dashboard: React.FC = () => {
         </button>
       </Form>
 
-      {repositories.length === 0 && (
-        <NothingMessage>
-          <p>Nenhum repositório encontrado.</p>
-        </NothingMessage>
+      {EventMessage && (
+        <EventMessage>
+          <p>{eventMessage}</p>
+        </EventMessage>
       )}
       {repositories.length > 0 && (
         <Repositories>

@@ -122,7 +122,7 @@ export const Repositories = styled.div`
   }
 `;
 
-export const NothingMessage = styled.div`
+export const EventMessage = styled.div`
   width: 100%;
   flex: 1;
   display: flex;
