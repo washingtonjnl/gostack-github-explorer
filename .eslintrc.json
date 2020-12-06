@@ -25,6 +25,8 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "indent": "off",
+    "implicit-arrow-linebreak": "off",
     "no-unused-expressions": "off",
     "no-extra-boolean-cast": "off",
     "operator-linebreak": "off",
